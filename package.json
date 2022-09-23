@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-console-help",
-  "version": "1.13.5",
-  "description": "Component modular import plugin for babel.",
+  "version": "0.0.0",
+  "description": "dev console debugging tool",
   "repository": {
     "type": "git",
     "url": "https://github.com/huogui/babel-plugin-console-help"
@@ -16,11 +16,6 @@
     "prepack": "npm run build",
     "prepublishOnly": "npm run build && np --no-cleanup --yolo --no-publish --any-branch"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.js": [
       "eslint",
@@ -28,10 +23,9 @@
     ]
   },
   "keywords": [
-    "babel-plugin",
-    "antd"
+    "babel-plugin"
   ],
-  "author": "wanglifei <645039234@qq.com>",
+  "author": "Rail Wang <645039234@qq.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -48,10 +42,8 @@
     "father-build": "^1.22.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.8",
-    "material-ui": "^0.20.2",
     "np": "^6.2.0",
-    "prettier": "^2.0.5",
-    "react-toolbox": "^1.2.5"
+    "prettier": "^2.0.5"
   },
   "files": [
     "src",
