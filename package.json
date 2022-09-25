@@ -2,6 +2,7 @@
   "name": "babel-plugin-console-help",
   "version": "0.0.0",
   "description": "dev console debugging tool",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/huogui/babel-plugin-console-help"

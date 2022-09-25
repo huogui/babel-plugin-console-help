@@ -1,18 +1,38 @@
+const fs = require('fs')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generate = require('@babel/generator').default
 const fg = require('fast-glob')
-const sourceCode = 'console.log(1);'
 
-const entries = fg(['src/*.js'], { dot: true })
+async function scan() {
+  const files = await fg(['test/*.js'], {
+    ignore: ['*.test.js'],
+    absolute: true,
+  })
+  return files
+}
 
-const ast = parser.parse(sourceCode, {
-  sourceType: 'unambiguous',
-})
+scan()
 
-traverse(ast, {
-  CallExpression(path, state) {
-  },
-})
+function parse(file) {
+  const sourceCode = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
+  const ast = parser.parse(sourceCode, {
+    sourceType: 'unambiguous',
+  })
+  traverse(ast, {
+    CallExpression(path, state) {
+    },
+  })
+  const { code, map } = generate(ast)
+  fs.writeFile('./cloneIndex.js', code)
+}
 
-const { code, map } = generate(ast)
+async function run() {
+  const files = await scan()
+  for (let i = 0; i < files.length; i++) {
+    parse(files[i])
+    console.log(files[i])
+  }
+}
+run()
+
