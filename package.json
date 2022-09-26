@@ -9,6 +9,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
+    "start":"nodemon src/index.js",
     "build": "father-build",
     "test": "umi-test --coverage",
     "debug": "umi-test",
@@ -46,6 +47,8 @@
     "@babel/helper-module-imports": "^7.18.6",
     "@babel/parser": "^7.19.1",
     "@babel/traverse": "^7.19.1",
-    "fast-glob": "^3.2.12"
+    "@babel/types": "^7.19.0",
+    "fast-glob": "^3.2.12",
+    "fs-extra": "^10.1.0"
   }
 }
