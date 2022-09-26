@@ -1,47 +1,38 @@
-const fs = require('fs')
-const fse = require('fs-extra')
 const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generate = require('@babel/generator').default
 const types = require('@babel/types')
-const fg = require('fast-glob')
 
-async function scan() {
-  const files = await fg(['test/*.js'], {
-    ignore: ['test/*.test.js'],
-    absolute: true,
-  })
-  return files
-}
+const sourceCode = `
+    console.log(1);
 
-scan()
+    function func() {
+        console.info(2);
+    }
 
-async function parse(file) {
-  const sourceCode = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' })
-  const ast = parser.parse(sourceCode, {
-    sourceType: 'unambiguous',
-    plugins: ['jsx'],
-  })
-  traverse(ast, {
-    CallExpression(path, state) {
-      if (types.isMemberExpression(path.node.callee)) {}
-    },
-  })
-  const { code, map } = generate(ast)
-  if (await isExist('dist/test.js'))
-    return
-  console.log(code)
-  fse.outputFile('dist/test.js', code)
-}
+    export default class Clazz {
+        say() {
+            console.debug(3);
+        }
+        render() {
+            return <div>{console.error(4)}</div>
+        }
+    }
+`
+const ast = parser.parse(sourceCode, {
+  sourceType: 'unambiguous',
+  plugins: ['jsx'],
+})
 
-async function isExist(filePath) {
-  return await fse.emptyDir(filePath)
-}
+const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`)
 
-async function run() {
-  const files = await scan()
-  for (let i = 0; i < files.length; i++)
-    parse(files[i])
-}
-run()
+traverse(ast, {
+  CallExpression(path, state) {
+    const calleeName = generate(path.node.callee).code
 
+    if (targetCalleeName.includes(calleeName)) {
+      const { line, column } = path.node.loc.start
+      path.node.arguments.unshift(types.stringLiteral(`filename: (${line}, ${column})`))
+    }
+  },
+})
