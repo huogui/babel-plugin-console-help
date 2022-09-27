@@ -2,37 +2,45 @@ const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generate = require('@babel/generator').default
 const types = require('@babel/types')
+const fg = require('fast-glob')
+const fse = require('fs-extra')
 
-const sourceCode = `
-    console.log(1);
+function consoleHelp(sourceCode) {
+  const ast = parser.parse(sourceCode, {
+    sourceType: 'unambiguous',
+    plugins: ['jsx'],
+  })
 
-    function func() {
-        console.info(2);
-    }
+  const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`)
 
-    export default class Clazz {
-        say() {
-            console.debug(3);
-        }
-        render() {
-            return <div>{console.error(4)}</div>
-        }
-    }
-`
-const ast = parser.parse(sourceCode, {
-  sourceType: 'unambiguous',
-  plugins: ['jsx'],
-})
+  traverse(ast, {
+    CallExpression(path, state) {
+      const calleeName = path.get('callee').toString()
 
-const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`)
+      if (targetCalleeName.includes(calleeName)) {
+        const { line, column } = path.node.loc.start
+        path.node.arguments.unshift(types.stringLiteral(`filename: (${line}, ${column})`))
+      }
+    },
+  })
 
-traverse(ast, {
-  CallExpression(path, state) {
-    const calleeName = generate(path.node.callee).code
+  const { code, decodedMap, map, rawMappings } = generate(ast)
+  console.log(code)
+}
 
-    if (targetCalleeName.includes(calleeName)) {
-      const { line, column } = path.node.loc.start
-      path.node.arguments.unshift(types.stringLiteral(`filename: (${line}, ${column})`))
-    }
-  },
-})
+function scanSourceCode() {
+  const files = fg.sync(['*.js'], {
+    ignore: ['*.test.js'],
+    cwd: 'test',
+    absolute: true,
+  })
+  for (let i = 0; i < files.length; i++) {
+    const code = fse.readFileSync(files[i], {
+      encoding: 'utf-8',
+    })
+    consoleHelp(code)
+  }
+}
+
+scanSourceCode()
+
