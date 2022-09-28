@@ -4,6 +4,7 @@ const generate = require('@babel/generator').default
 const types = require('@babel/types')
 const fg = require('fast-glob')
 const fse = require('fs-extra')
+const template = require('@babel/template').default
 
 function consoleHelp(sourceCode) {
   const ast = parser.parse(sourceCode, {
@@ -15,11 +16,23 @@ function consoleHelp(sourceCode) {
 
   traverse(ast, {
     CallExpression(path, state) {
-      const calleeName = path.get('callee').toString()
+      if (path.node.isNew)
+        return
 
+      const calleeName = generate(path.node.callee).code
       if (targetCalleeName.includes(calleeName)) {
         const { line, column } = path.node.loc.start
-        path.node.arguments.unshift(types.stringLiteral(`filename: (${line}, ${column})`))
+
+        const newNode = template.expression(`console.log("filename: (${line}, ${column})")`)()
+        newNode.isNew = true
+
+        if (path.findParent(path => path.isJSXElement())) {
+          path.replaceWith(types.arrayExpression([newNode, path.node]))
+          path.skip()
+        }
+        else {
+          path.insertBefore(newNode)
+        }
       }
     },
   })
