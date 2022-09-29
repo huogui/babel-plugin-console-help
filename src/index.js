@@ -5,6 +5,7 @@ const types = require('@babel/types')
 const template = require('@babel/template').default
 const fg = require('fast-glob')
 const fse = require('fs-extra')
+const template = require('@babel/template').default
 
 function consoleHelp(sourceCode) {
   const ast = parser.parse(sourceCode, {
