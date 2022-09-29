@@ -1,14 +1,13 @@
-    console.log(1);
+const path = require('path')
+const { transformFileSync } = require('@babel/core')
+const insertParametersPlugin = require('../core/index')
 
-    function func() {
-        console.info(2);
-    }
+const { code } = transformFileSync(path.join(__dirname, 'sourceCode.js'), {
+  plugins: [insertParametersPlugin],
+  parserOpts: {
+    sourceType: 'unambiguous',
+    plugins: ['jsx'],
+  },
+})
 
-    export default class Clazz {
-        say() {
-            console.debug(3);
-        }
-        render() {
-            return <div>{console.error(4)}</div>
-        }
-    }
+console.log(code)
