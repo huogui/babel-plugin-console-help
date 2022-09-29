@@ -10,7 +10,6 @@ module.exports = function ({ types, template }) {
       CallExpression(path, state) {
         if (path.node.isNew)
           return
-        console.log(path.node.callee)
         const calleeName = generate(path.node.callee).code
 
         if (targetCalleeName.includes(calleeName)) {
