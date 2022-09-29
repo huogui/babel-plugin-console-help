@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/huogui/babel-plugin-console-help"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
     "build": "father-build",
@@ -25,15 +25,9 @@
   "license": "MIT",
   "devDependencies": {
     "@antfu/eslint-config": "^0.27.0",
-    "@babel/core": "^7.19.1",
-    "@umijs/test": "^3.5.34",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-preset-umi": "^1.8.4",
-    "coveralls": "^3.1.1",
+
     "eslint": "^8.24.0",
-    "father-build": "^1.22.5",
-    "husky": "^4.3.8",
-    "np": "^6.5.0"
+    "husky": "^4.3.8"
   },
   "files": [
     "src",
@@ -42,6 +36,7 @@
     "README.md"
   ],
   "dependencies": {
+    "@babel/core": "^7.19.1",
     "@babel/generator": "^7.19.0",
     "@babel/helper-module-imports": "^7.18.6",
     "@babel/parser": "^7.19.1",

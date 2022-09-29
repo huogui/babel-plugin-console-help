@@ -1,4 +1,6 @@
+const _path = require('path')
 const generate = require('@babel/generator').default
+const fse = require('fs-extra')
 
 const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`)
 
@@ -8,7 +10,7 @@ module.exports = function ({ types, template }) {
       CallExpression(path, state) {
         if (path.node.isNew)
           return
-
+        console.log(path.node.callee)
         const calleeName = generate(path.node.callee).code
 
         if (targetCalleeName.includes(calleeName)) {
