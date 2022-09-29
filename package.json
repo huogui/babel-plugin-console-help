@@ -9,12 +9,8 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "build": "father-build",
-    "test": "umi-test --coverage",
-    "debug": "umi-test",
     "lint": "eslint --ext .js src",
     "lint:fix": "eslint --ext .js src --fix",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prepack": "npm run build",
     "prepublishOnly": "npm run build && np --no-cleanup --yolo --no-publish --any-branch"
   },
@@ -24,15 +20,15 @@
   "author": "Rail Wang <645039234@qq.com>",
   "license": "MIT",
   "devDependencies": {
-    "@antfu/eslint-config": "^0.27.0",
     "@babel/core": "^7.19.1",
+    "@huogui/eslint-config": "^1.0.1",
     "@umijs/test": "^3.5.34",
     "babel-core": "^7.0.0-bridge.0",
     "babel-preset-umi": "^1.8.4",
     "coveralls": "^3.1.1",
-    "eslint": "^8.24.0",
     "father-build": "^1.22.5",
     "husky": "^4.3.8",
+    "eslint": "^8.23.0",
     "np": "^6.5.0"
   },
   "files": [

@@ -1,6 +1,9 @@
+    
+    
     console.log(1);
 
-    function func() {
+
+    function func()  {
         console.info(2);
     }
 
