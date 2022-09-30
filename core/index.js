@@ -1,6 +1,4 @@
-const _path = require('path')
 const generate = require('@babel/generator').default
-const fse = require('fs-extra')
 
 const targetCalleeName = ['log', 'info', 'error', 'debug'].map(item => `console.${item}`)
 
