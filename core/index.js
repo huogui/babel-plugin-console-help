@@ -8,7 +8,7 @@ module.exports = function ({ types, template }) {
       CallExpression(path, state) {
         if (path.node.isNew)
           return
-        const calleeName = generate(path.node.callee).code
+        const calleeName =      generate(path.node.callee).code
 
         if (targetCalleeName.includes(calleeName)) {
           const { line, column } = path.node.loc.start

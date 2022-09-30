@@ -10,3 +10,4 @@ const { code } = transformFileSync(path.join(__dirname, 'sourceCode.js'), {
   },
 })
 
+console.log(code)
